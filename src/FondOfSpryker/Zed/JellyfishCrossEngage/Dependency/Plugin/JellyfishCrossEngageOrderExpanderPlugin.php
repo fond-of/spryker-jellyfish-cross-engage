@@ -6,7 +6,7 @@ use FondOfSpryker\Zed\JellyfishExtension\Dependency\Plugin\JellyfishOrderExpande
 use Generated\Shared\Transfer\JellyfishOrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 
-class JellyfishCrossEngangeOrderExpanderPlugin implements JellyfishOrderExpanderPostMapPluginInterface
+class JellyfishCrossEngageOrderExpanderPlugin implements JellyfishOrderExpanderPostMapPluginInterface
 {
     public function expand(
         JellyfishOrderTransfer $jellyfishOrderTransfer,
