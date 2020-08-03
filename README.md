@@ -6,7 +6,7 @@
 ## Installation
 
 ```
-composer require spryker-jellyfish-cross-engange
+composer require fond-of-spryker/jellyfish-cross-engage
 ```
 
 ##
