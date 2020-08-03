@@ -14,7 +14,7 @@
   ],
   "require": {
     "php": ">=7.2",
-    "fond-of-spryker/jellyfish": "dev-master"
+    "fond-of-spryker/jellyfish": "dev-detox/extract-ce-stuff"
   },
   "require-dev": {
     "spryker/code-sniffer": "^0.12",
