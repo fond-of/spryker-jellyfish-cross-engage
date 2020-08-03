@@ -2,7 +2,6 @@
 
 namespace FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Plugin;
 
-
 use Codeception\PHPUnit\TestCase;
 use FondOfSpryker\Zed\JellyfishExtension\Dependency\Plugin\JellyfishOrderExpanderPostMapPluginInterface;
 use Generated\Shared\Transfer\JellyfishOrderTransfer;
@@ -10,6 +9,7 @@ use Orm\Zed\Sales\Persistence\SpySalesOrder;
 
 /**
  * Auto-generated group annotations
+ *
  * @group FondOfSpryker
  * @group Zed
  * @group JellyfishCrossEngage
@@ -36,12 +36,15 @@ class JellyfishCrossEngageOrderExpanderPluginTest extends TestCase
     protected const SET_GENDER = 'setGender';
     protected const SET_SALUTATION = 'setSalutation';
 
+    /**
+     * @return void
+     */
     public function testExpand()
     {
         $plugin = $this->createPlugin();
         $salesOrder = $this->createSalesOrderMock([
             static::GET_IP, static::GET_OPT_IN_URL, static::GET_OPT_OUT_URL, static::GET_USER_HASH,
-            static::GET_SIGNUP_NEWSLETTER, static::GET_GENDER, static::GET_SALUTATION
+            static::GET_SIGNUP_NEWSLETTER, static::GET_GENDER, static::GET_SALUTATION,
         ]);
         $salesOrder->expects($this->exactly(1))->method(static::GET_IP)->willReturn(static::GET_IP);
         $salesOrder->expects($this->exactly(1))->method(static::GET_OPT_IN_URL)->willReturn(static::GET_OPT_IN_URL);
@@ -53,7 +56,7 @@ class JellyfishCrossEngageOrderExpanderPluginTest extends TestCase
 
         $jellyTransfer = $this->createJellyfishOrderTransferMock([
             static::SET_IP, static::SET_OPT_IN_URL, static::SET_OPT_OUT_URL, static::SET_USER_HASH,
-            static::SET_SIGNUP_NEWSLETTER, static::SET_GENDER, static::SET_SALUTATION
+            static::SET_SIGNUP_NEWSLETTER, static::SET_GENDER, static::SET_SALUTATION,
         ]);
 
         $jellyTransfer->expects($this->exactly(1))->method(static::SET_IP)->willReturn($jellyTransfer);
@@ -68,7 +71,7 @@ class JellyfishCrossEngageOrderExpanderPluginTest extends TestCase
     }
 
     /**
-     * @param  array  $methods
+     * @param array $methods
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrder|\PHPUnit\Framework\MockObject\MockObject
      */
@@ -78,7 +81,7 @@ class JellyfishCrossEngageOrderExpanderPluginTest extends TestCase
     }
 
     /**
-     * @param  array  $methods
+     * @param array $methods
      *
      * @return \Generated\Shared\Transfer\JellyfishOrderTransfer|\PHPUnit\Framework\MockObject\MockObject
      */
