@@ -8,3 +8,17 @@
 ```
 composer require spryker-jellyfish-cross-engange
 ```
+
+##
+
+Register mapping plugin `JellyfishCrossEngangeOrderExpanderPlugin` in `src/Pyz/Zed/Jellyfish/JellyfishDependencyProvider.php`
+
+```
+    protected function getJellyfishOrderExpanderPostMapPlugins(): array
+    {
+        return [
+            ...
+            new JellyfishCrossEngangeOrderExpanderPlugin(),
+        ];
+    }
+```
