@@ -2,11 +2,11 @@
 
 namespace FondOfSpryker\Zed\JellyfishCrossEngage\Business;
 
-use FondOfSpryker\Zed\Jellyfish\Business\JellyfishFacade;
+use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
  * @method \FondOfSpryker\Zed\JellyfishCrossEngage\Business\JellyfishCrossEngageBusinessFactory getFactory()
  */
-class JellyfishCrossEngageFacade extends JellyfishFacade implements JellyfishCrossEngageFacadeInterface
+class JellyfishCrossEngageFacade extends AbstractFacade implements JellyfishCrossEngageFacadeInterface
 {
 }

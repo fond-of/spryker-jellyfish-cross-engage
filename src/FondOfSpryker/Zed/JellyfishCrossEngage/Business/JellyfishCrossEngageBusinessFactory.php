@@ -2,11 +2,11 @@
 
 namespace FondOfSpryker\Zed\JellyfishCrossEngage\Business;
 
-use FondOfSpryker\Zed\Jellyfish\Business\JellyfishBusinessFactory;
+use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
  * @method \FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig getConfig()
  */
-class JellyfishCrossEngageBusinessFactory extends JellyfishBusinessFactory
+class JellyfishCrossEngageBusinessFactory extends AbstractBusinessFactory
 {
 }

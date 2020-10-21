@@ -2,8 +2,8 @@
 
 namespace FondOfSpryker\Zed\JellyfishCrossEngage;
 
-use FondOfSpryker\Zed\Jellyfish\JellyfishDependencyProvider;
+use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 
-class JellyfishCrossEngageDependencyProvider extends JellyfishDependencyProvider
+class JellyfishCrossEngageDependencyProvider extends AbstractBundleDependencyProvider
 {
 }

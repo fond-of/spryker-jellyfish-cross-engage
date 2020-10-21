@@ -2,8 +2,8 @@
 
 namespace FondOfSpryker\Zed\JellyfishCrossEngage;
 
-use FondOfSpryker\Zed\Jellyfish\JellyfishConfig;
+use Spryker\Zed\Kernel\AbstractBundleConfig;
 
-class JellyfishCrossEngageConfig extends JellyfishConfig
+class JellyfishCrossEngageConfig extends AbstractBundleConfig
 {
 }
