@@ -3,15 +3,19 @@
 [![PHP from Travis config](https://img.shields.io/travis/php-v/symfony/symfony.svg)](https://php.net/)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://packagist.org/packages/spryker-jellyfish-cross-engage)
 
+## What it does
+
+* Provides expander plugin vor jellyfish order export.
+    * Maps needed data for CrossEngage
+
 ## Installation
 
 ```
 composer require fond-of-spryker/jellyfish-cross-engage
 ```
 
-##
-
-Register mapping plugin `JellyfishCrossEngageOrderExpanderPlugin` in `src/Pyz/Zed/Jellyfish/JellyfishDependencyProvider.php`
+## Configuration
+Register mapping plugin `JellyfishCrossEngageOrderExpanderPlugin` in `src/Pyz/Zed/JellyfishSalesOrder/JellyfishSalesOrderDependencyProvider.php`
 
 ```
     protected function getJellyfishOrderExpanderPostMapPlugins(): array
