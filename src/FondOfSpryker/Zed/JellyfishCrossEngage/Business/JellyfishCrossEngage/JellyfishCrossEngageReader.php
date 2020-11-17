@@ -57,7 +57,6 @@ class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
     public function getGender(JellyfishOrderItemTransfer $jellyfishOrderItemTransfer): ?string
     {
         $productConcreteTransfer = $this->productFacade->getProductConcrete($jellyfishOrderItemTransfer->getSku());
-
         $attributes = $this->productFacade->getCombinedConcreteAttributes($productConcreteTransfer);
 
         return $attributes ? $attributes['gender'] ?? null : null;
@@ -71,7 +70,6 @@ class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
     public function getCategories(JellyfishOrderItemTransfer $jellyfishOrderItemTransfer): ?string
     {
         $localeTransfer = $this->localeFacade->getLocale($this->config->getDefaultLocaleName());
-
         $productConcreteTransfer = $this->productFacade->getProductConcrete($jellyfishOrderItemTransfer->getSku());
 
         $categoryCollectionTransfer = $this->productCategoryFacade->getCategoryTransferCollectionByIdProductAbstract(
@@ -96,14 +94,19 @@ class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
             return null;
         }
 
+        $defaultLocaleName = $this->config->getDefaultLocaleName();
         foreach ($categories as $key => $category) {
-            if ($key === 0) {
-                $categoryString .= $category->getName();
-                continue;
+            foreach ($category->getLocalizedAttributes() as $localizedCatAttribute) {
+                if ($localizedCatAttribute->getLocale()->getLocaleName() !== $defaultLocaleName) {
+                    continue;
+                }
+                if ($key === 0) {
+                    $categoryString .= $localizedCatAttribute->getName() . ', ';
+                    continue;
+                }
+                $categoryString .= $localizedCatAttribute->getName() . ', ';
             }
-            $categoryString .= $category->getName() . ', ';
         }
-
-        return $categoryString;
+        return rtrim($categoryString, ', ');
     }
 }

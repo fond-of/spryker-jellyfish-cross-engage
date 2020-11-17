@@ -10,6 +10,7 @@ use FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngag
 use FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngageToProductFacadeInterface;
 use FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig;
 use Generated\Shared\Transfer\CategoryCollectionTransfer;
+use Generated\Shared\Transfer\CategoryLocalizedAttributesTransfer;
 use Generated\Shared\Transfer\CategoryTransfer;
 use Generated\Shared\Transfer\JellyfishOrderItemTransfer;
 use Generated\Shared\Transfer\LocaleTransfer;
@@ -103,6 +104,16 @@ class JellyfishCrossEngageReaderTest extends Unit
     protected $categoryName;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CategoryLocalizedAttributesTransfer
+     */
+    protected $categoryLocalizedAttributesTransferMock;
+
+    /**
+     * @var \ArrayObject|\Generated\Shared\Transfer\CategoryLocalizedAttributesTransfer[]
+     */
+    protected $categoryLocalizedAttributesTransferMocks;
+
+    /**
      * @return void
      */
     protected function _before(): void
@@ -160,6 +171,14 @@ class JellyfishCrossEngageReaderTest extends Unit
         ]);
 
         $this->categoryName = 'category-name';
+
+        $this->categoryLocalizedAttributesTransferMock = $this->getMockBuilder(CategoryLocalizedAttributesTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->categoryLocalizedAttributesTransferMocks = new ArrayObject([
+            $this->categoryLocalizedAttributesTransferMock,
+        ]);
 
         $this->jellyfishCrossEngageReader = new JellyfishCrossEngageReader(
             $this->productFacade,
@@ -233,6 +252,18 @@ class JellyfishCrossEngageReaderTest extends Unit
             ->willReturn($this->categoryTransferMocks);
 
         $this->categoryTransferMock->expects($this->atLeastOnce())
+            ->method('getLocalizedAttributes')
+            ->willReturn($this->categoryLocalizedAttributesTransferMocks);
+
+        $this->categoryLocalizedAttributesTransferMock->expects($this->atLeastOnce())
+            ->method('getLocale')
+            ->willReturn($this->localeTransferMock);
+
+        $this->localeTransferMock->expects($this->atLeastOnce())
+            ->method('getLocaleName')
+            ->willReturn($this->configMock->getDefaultLocaleName());
+
+        $this->categoryLocalizedAttributesTransferMock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($this->categoryName);
 
