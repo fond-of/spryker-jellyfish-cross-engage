@@ -7,6 +7,7 @@ use FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngag
 use FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngageToProductFacadeInterface;
 use FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig;
 use Generated\Shared\Transfer\CategoryCollectionTransfer;
+use Generated\Shared\Transfer\CategoryTransfer;
 use Generated\Shared\Transfer\JellyfishOrderItemTransfer;
 
 class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
@@ -22,26 +23,26 @@ class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
     protected $productCategoryFacade;
 
     /**
-     * @var \FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig
-     */
-    protected $config;
-
-    /**
      * @var \FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngageToLocaleFacadeInterface
      */
     protected $localeFacade;
 
     /**
+     * @var \FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig
+     */
+    protected $config;
+
+    /**
      * @param \FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngageToProductFacadeInterface $productFacade
      * @param \FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngageToProductCategoryFacadeInterface $productCategoryFacade
-     * @param \FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig $config
      * @param \FondOfSpryker\Zed\JellyfishCrossEngage\Dependency\Client\JellyfishCrossEngageToLocaleFacadeInterface $localeFacade
+     * @param \FondOfSpryker\Zed\JellyfishCrossEngage\JellyfishCrossEngageConfig $config
      */
     public function __construct(
         JellyfishCrossEngageToProductFacadeInterface $productFacade,
         JellyfishCrossEngageToProductCategoryFacadeInterface $productCategoryFacade,
-        JellyfishCrossEngageConfig $config,
-        JellyfishCrossEngageToLocaleFacadeInterface $localeFacade
+        JellyfishCrossEngageToLocaleFacadeInterface $localeFacade,
+        JellyfishCrossEngageConfig $config
     ) {
         $this->productFacade = $productFacade;
         $this->productCategoryFacade = $productCategoryFacade;
@@ -59,7 +60,7 @@ class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
         $productConcreteTransfer = $this->productFacade->getProductConcrete($jellyfishOrderItemTransfer->getSku());
         $attributes = $this->productFacade->getCombinedConcreteAttributes($productConcreteTransfer);
 
-        return $attributes ? $attributes['gender'] ?? null : null;
+        return $attributes[$this->config->getGenderAttributeKey()] ?? null;
     }
 
     /**
@@ -87,26 +88,39 @@ class JellyfishCrossEngageReader implements JellyfishCrossEngageReaderInterface
      */
     protected function mapCategoryCollectionToString(CategoryCollectionTransfer $categoryCollectionTransfer): ?string
     {
-        $categories = $categoryCollectionTransfer->getCategories();
         $categoryString = '';
+        $categories = $categoryCollectionTransfer->getCategories();
 
         if ($categories->count() === 0) {
             return null;
         }
 
-        $defaultLocaleName = $this->config->getDefaultLocaleName();
-        foreach ($categories as $key => $category) {
-            foreach ($category->getLocalizedAttributes() as $localizedCatAttribute) {
-                if ($localizedCatAttribute->getLocale()->getLocaleName() !== $defaultLocaleName) {
-                    continue;
-                }
-                if ($key === 0) {
-                    $categoryString .= $localizedCatAttribute->getName() . ', ';
-                    continue;
-                }
-                $categoryString .= $localizedCatAttribute->getName() . ', ';
-            }
+        foreach ($categories as $category) {
+            $categoryString .= $this->mapCategoryToString($category);
         }
-        return rtrim($categoryString, ', ');
+
+        return rtrim($categoryString, $this->config->getCategoriesSeparator());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CategoryTransfer $categoryTransfer
+     *
+     * @return string
+     */
+    protected function mapCategoryToString(CategoryTransfer $categoryTransfer): string
+    {
+        $categoryString = '';
+
+        foreach ($categoryTransfer->getLocalizedAttributes() as $localizedCatAttribute) {
+            $locale = $localizedCatAttribute->getLocale();
+
+            if ($locale === null || $locale->getLocaleName() !== $this->config->getDefaultLocaleName()) {
+                continue;
+            }
+
+            $categoryString .= $localizedCatAttribute->getName() . $this->config->getCategoriesSeparator();
+        }
+
+        return $categoryString;
     }
 }

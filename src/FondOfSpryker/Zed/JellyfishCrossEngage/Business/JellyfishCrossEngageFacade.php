@@ -15,9 +15,8 @@ class JellyfishCrossEngageFacade extends AbstractFacade implements JellyfishCros
      *
      * @return string|null
      */
-    public function getGender(
-        JellyfishOrderItemTransfer $jellyfishOrderItemTransfer
-    ): ?string {
+    public function getGender(JellyfishOrderItemTransfer $jellyfishOrderItemTransfer): ?string
+    {
         return $this->getFactory()
             ->createJellyfishCrossEngageReader()
             ->getGender($jellyfishOrderItemTransfer);
@@ -28,9 +27,8 @@ class JellyfishCrossEngageFacade extends AbstractFacade implements JellyfishCros
      *
      * @return \ArrayObject|string[]|null
      */
-    public function getCategories(
-        JellyfishOrderItemTransfer $jellyfishOrderItemTransfer
-    ): ?string {
+    public function getCategories(JellyfishOrderItemTransfer $jellyfishOrderItemTransfer): ?string
+    {
         return $this->getFactory()
             ->createJellyfishCrossEngageReader()
             ->getCategories($jellyfishOrderItemTransfer);

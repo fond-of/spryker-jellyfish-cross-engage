@@ -114,6 +114,11 @@ class JellyfishCrossEngageReaderTest extends Unit
     protected $categoryLocalizedAttributesTransferMocks;
 
     /**
+     * @var string
+     */
+    protected $categoryName2;
+
+    /**
      * @return void
      */
     protected function _before(): void
@@ -172,19 +177,22 @@ class JellyfishCrossEngageReaderTest extends Unit
 
         $this->categoryName = 'category-name';
 
+        $this->categoryName2 = 'category-name-2';
+
         $this->categoryLocalizedAttributesTransferMock = $this->getMockBuilder(CategoryLocalizedAttributesTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->categoryLocalizedAttributesTransferMocks = new ArrayObject([
             $this->categoryLocalizedAttributesTransferMock,
+            $this->categoryLocalizedAttributesTransferMock,
         ]);
 
         $this->jellyfishCrossEngageReader = new JellyfishCrossEngageReader(
             $this->productFacade,
             $this->productCategoryFacade,
-            $this->configMock,
-            $this->localeFacade
+            $this->localeFacade,
+            $this->configMock
         );
     }
 
@@ -206,6 +214,10 @@ class JellyfishCrossEngageReaderTest extends Unit
             ->method('getCombinedConcreteAttributes')
             ->with($this->productConcreteTransferMock)
             ->willReturn($this->attributes);
+
+        $this->configMock->expects($this->atLeastOnce())
+            ->method('getGenderAttributeKey')
+            ->willReturn('gender');
 
         $this->assertSame(
             $this->gender,
@@ -263,12 +275,19 @@ class JellyfishCrossEngageReaderTest extends Unit
             ->method('getLocaleName')
             ->willReturn($this->configMock->getDefaultLocaleName());
 
+        $this->configMock->expects($this->atLeastOnce())
+            ->method('getCategoriesSeparator')
+            ->willReturn(', ');
+
         $this->categoryLocalizedAttributesTransferMock->expects($this->atLeastOnce())
             ->method('getName')
-            ->willReturn($this->categoryName);
+            ->willReturnOnConsecutiveCalls(
+                $this->categoryName,
+                $this->categoryName2
+            );
 
         $this->assertSame(
-            $this->categoryName,
+            $this->categoryName . ', ' . $this->categoryName2,
             $this->jellyfishCrossEngageReader->getCategories(
                 $this->jellyfishOrderItemTransferMock
             )

@@ -11,16 +11,12 @@ interface JellyfishCrossEngageFacadeInterface
      *
      * @return string|null
      */
-    public function getGender(
-        JellyfishOrderItemTransfer $jellyfishOrderItemTransfer
-    ): ?string;
+    public function getGender(JellyfishOrderItemTransfer $jellyfishOrderItemTransfer): ?string;
 
     /**
      * @param \Generated\Shared\Transfer\JellyfishOrderItemTransfer $jellyfishOrderItemTransfer
      *
      * @return string
      */
-    public function getCategories(
-        JellyfishOrderItemTransfer $jellyfishOrderItemTransfer
-    ): ?string;
+    public function getCategories(JellyfishOrderItemTransfer $jellyfishOrderItemTransfer): ?string;
 }

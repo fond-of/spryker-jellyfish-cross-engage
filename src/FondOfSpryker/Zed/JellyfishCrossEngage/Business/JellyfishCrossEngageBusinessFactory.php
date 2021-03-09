@@ -23,8 +23,8 @@ class JellyfishCrossEngageBusinessFactory extends AbstractBusinessFactory
         return new JellyfishCrossEngageReader(
             $this->getProductFacade(),
             $this->getProductCategoryFacade(),
-            $this->getConfig(),
-            $this->getLocaleFacade()
+            $this->getLocaleFacade(),
+            $this->getConfig()
         );
     }
 
